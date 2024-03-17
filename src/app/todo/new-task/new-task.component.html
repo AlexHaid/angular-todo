@@ -1,0 +1,11 @@
+<p>new-task works!</p>
+<form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <label for="task">Name: </label>
+    <input id="task" type="text" formControlName="task">
+    <button type="submit">Submit</button>
+</form>
+
+<p>
+    validation status: {{taskForm.status}}
+</p>
+<button (click)="clear()">clear</button>
