@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { TodoService } from '../todo.service';
 
 @Component({
   selector: 'app-new-task',
@@ -8,7 +9,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class NewTaskComponent {
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private todoService: TodoService
   ) {};
   taskForm = this.formBuilder.group({
     task: ['', Validators.required]
@@ -16,10 +18,12 @@ export class NewTaskComponent {
 
   clear() {
     this.taskForm.setValue({
-      task: 'kinda cleared'
+      task: ''
     })
   }
   onSubmit() {
-    console.log(111, this.taskForm.value)
+    const { task } = this.taskForm.value;
+    if (task) this.todoService.addTask(task);
+    this.clear();
   }
 }
