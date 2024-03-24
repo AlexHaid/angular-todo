@@ -21,6 +21,7 @@ export class NewTaskComponent {
       task: ''
     })
   }
+
   onSubmit() {
     const { task } = this.taskForm.value;
     if (task) this.todoService.addTask(task);

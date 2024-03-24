@@ -1,5 +1,17 @@
-<ul>
-	<li *ngFor="let item of tasks">
-		{{item.title}}
-	</li>
-</ul>
+<!-- presenter -->
+<form #tasksForm="ngForm">
+	<div *ngIf="form.tasks.length">
+		<div *ngFor="let task of form.tasks; let i=index">
+
+			<!-- TODO specific view for input, changeDetection.onPush -->
+			<input 
+				[(ngModel)]="task.title" name="task-{{ i }}" 
+				[ngClass]="task.completed === true ? 'done' : ''" id="task-{{ i }}" type="text"
+			>
+			<button type="button">edit</button>
+			<button type="button" (click)="onTaskRemove(task.id)">delete</button>
+			<button type="button" (click)="onTaskMark(task.id)">check</button>
+		</div>
+	</div>
+</form>
+<!-- TODO add form to update/edit speciic item -->

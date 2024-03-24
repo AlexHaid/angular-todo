@@ -1,8 +1,8 @@
-import { Component, Inject } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component } from '@angular/core';
 import { TodoService } from '../todo.service';
+import { FormBuilder } from '@angular/forms';
 
-interface Task {
+interface ITask {
   id: number,
   title: string,
   completed: boolean
@@ -13,29 +13,38 @@ interface Task {
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.css'
 })
-// export class TaskListComponent {
-//   constructor(
-//     private todoService: TodoService
-//   ) {
-//     this.subscription = this.todoService.tasks$.subscribe(tasks => this.tasks = tasks);
-//   }
-
-//   tasks: Task[] = [];
-//   subscription: Subscription;
-
-//   ngOnInit() {
-//     // this.data.tasks.subscribe(tasks => this.tasks = tasks);
-//   }
-// }
 
 export class TaskListComponent {
-  tasks: any[] = [];
 
-  constructor(private todoService: TodoService) {
-    this.todoService.taskSubject.subscribe(tasks => this.tasks = tasks);
+  // DI example -> low coupling
+  constructor(
+    private todoService: TodoService,
+  ) {
+
+    this.form = {
+      tasks: []
+    }
   }
 
+
+  form: {
+    tasks: ITask[];
+  };
+
+  // output emitter
+
   ngOnInit() {
-    this.tasks = this.todoService.getTasks();
+    // replace with asyncPipe
+    this.todoService.taskList.subscribe(tasks => {
+      this.form.tasks = tasks;
+    })
+  }
+
+  onTaskMark(id: number) {
+    this.todoService.markTask(id)
+  }
+
+  onTaskRemove(id: number) {
+    this.todoService.removeTask(id)
   }
 }
