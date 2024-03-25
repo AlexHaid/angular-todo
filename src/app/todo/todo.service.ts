@@ -1,58 +1,69 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { BehaviorSubject, map, Observable, take, tap } from 'rxjs';
 import ITask from './interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
-  private tasks: ITask[] = [
-    {
-      "id": 1,
-      "title": "delectus aut autem",
-      "completed": true
-    },
-    {
-      "id": 2,
-      "title": "quis ut nam facilis et officia qui",
-      "completed": false
-    },
-    {
-      "id": 3,
-      "title": "fugiat veniam minus",
-      "completed": false
-    }
-]
+  constructor() {
+    this.fetchTasks();
+  }
 
-  taskSubject = new BehaviorSubject<ITask[]>(this.tasks);
-  taskList = this.taskSubject.asObservable();
+  private http = inject(HttpClient);
+  private _tasks = new BehaviorSubject<ITask[]>([]);
+
+  private _addTask(task: ITask) {
+    const tasks = this._tasks.getValue();
+    tasks.push(task);
+    this._tasks.next(tasks);
+  }
+
+  private _markTask(id: number) {
+    const tasks = this._tasks.getValue();
+    tasks.map(task => {
+      if (task.id === id) task.completed = !task.completed;
+      return task;
+    });
+    this._tasks.next(tasks);
+  }
+
+  private _removeTask(id: number) {
+    const tasks = this._tasks.getValue().filter(task => task.id !== id);
+    this._tasks.next(tasks)
+  }
+
+  private fetchTasks() {
+    this.http.get<ITask[]>(`https://jsonplaceholder.typicode.com/todos?userId=1`)
+      .subscribe({
+        next: res => {
+          console.log(res);
+          this._tasks.next(res);
+        } 
+      });
+  }
+
+  public get tasks(): Observable<ITask[]> {
+    return new Observable(fn => this._tasks.subscribe(fn));
+  }
 
   public addTask(title: string) {
-    const lastId = this.tasks[this.tasks.length - 1]?.id || 0;
+    const id = Math.round(Math.random() * 1000000);
     const newTask: ITask = {
-      id: lastId + 1,
+      id,
       title,
       completed: false
     };
-
-    this.tasks.push(newTask);
-    this.taskSubject.next(this.tasks);
+    return this._addTask(newTask);
   }
 
   public markTask(id: number) {
-    this.tasks.map(task => {
-      if (task.id === id) task.completed = !task.completed;
-      return task;
-    })
-
-    this.taskSubject.next(this.tasks);
+    this._markTask(id);
   }
 
-  // private method to do with BS
-
   public removeTask(id: number) {
-    this.tasks = this.tasks.filter(task => task.id !== id);
-    
-    this.taskSubject.next(this.tasks)
+    console.log(id);
+    this._removeTask(id)
   }
 }

@@ -1,12 +1,7 @@
 import { Component } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import ITask from '../interfaces';
 import { TodoService } from '../todo.service';
-import { FormBuilder } from '@angular/forms';
-
-interface ITask {
-  id: number,
-  title: string,
-  completed: boolean
-}
 
 @Component({
   selector: 'app-task-list',
@@ -16,29 +11,15 @@ interface ITask {
 
 export class TaskListComponent {
 
-  // DI example -> low coupling
   constructor(
-    private todoService: TodoService,
-  ) {
-
-    this.form = {
-      tasks: []
-    }
-  }
-
-
-  form: {
-    tasks: ITask[];
+    public todoService: TodoService,
+  ) {}
+  
+  public currentTask = {
+    title: '',
+    id: 0,
+    completed: false
   };
-
-  // output emitter
-
-  ngOnInit() {
-    // replace with asyncPipe
-    this.todoService.taskList.subscribe(tasks => {
-      this.form.tasks = tasks;
-    })
-  }
 
   onTaskMark(id: number) {
     this.todoService.markTask(id)
@@ -46,5 +27,11 @@ export class TaskListComponent {
 
   onTaskRemove(id: number) {
     this.todoService.removeTask(id)
+  }
+
+  onTaskEdit(task: ITask) {
+    this.currentTask = task;
+    // this.currentTask.next(task);
+    console.log(123, this.currentTask);
   }
 }

@@ -1,7 +1,8 @@
 interface ITask {
   id: number,
   title: string,
-  completed: boolean
+  completed: boolean,
+  userId?: number
 }
 
 export default ITask;
