@@ -1,12 +1,8 @@
 <div *ngFor="let task of todoService.tasks | async">
-	<!-- TODO specific view for input, changeDetection.onPush -->
-	<input 
-		[(ngModel)]="task.title" name="task-{{ task.id }}" 
-		[ngClass]="task.completed === true ? 'done' : ''" id="task-{{ task.id }}" type="text"
-	>
+	<app-task-item [(title)]="task.title" [completed]="task.completed"></app-task-item>
 	<button type="button" (click)="onTaskEdit(task)">edit</button>
 	<button type="button" (click)="onTaskRemove(task.id)">delete</button>
 	<button type="button" (click)="onTaskMark(task.id)">check</button>
 </div>
 
-<app-edit-task [task]="currentTask"></app-edit-task>
+<app-edit-task (submitTaskEvent)="submitTask()" [task]="currentTask"></app-edit-task>

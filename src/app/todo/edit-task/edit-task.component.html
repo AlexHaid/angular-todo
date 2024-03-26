@@ -1,6 +1,8 @@
-<form (ngSubmit)="onSubmit()">
-	<p>task.title: {{task.title}}</p>
-	<label for="task">Task edit: </label>
-	<input [(ngModel)]="task.title" name="currentTitle" id="task" type="text">
-	<button type="submit">Submit</button>
-</form>
+<div *ngIf="task.title">
+	<form (ngSubmit)="onSubmit()">
+		<p>task.title: {{task.title}}</p>
+		<label for="task">Task edit: </label>
+		<input [(ngModel)]="task.title" name="currentTitle" id="task" type="text">
+		<button type="submit">Submit</button>
+	</form>
+</div>

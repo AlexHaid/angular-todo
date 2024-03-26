@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import ITask from '../interfaces';
 import { TodoService } from '../todo.service';
 
@@ -29,9 +28,15 @@ export class TaskListComponent {
     this.todoService.removeTask(id)
   }
 
+  submitTask() {
+    this.currentTask = {
+      title: '',
+      id: 0,
+      completed: false
+    }
+  }
+
   onTaskEdit(task: ITask) {
     this.currentTask = task;
-    // this.currentTask.next(task);
-    console.log(123, this.currentTask);
   }
 }

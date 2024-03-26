@@ -1,4 +1,5 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import ITask from '../interfaces';
 
 @Component({
   selector: 'app-edit-task',
@@ -6,13 +7,14 @@ import { Component, Input, SimpleChanges } from '@angular/core';
   styleUrl: './edit-task.component.css'
 })
 export class EditTaskComponent {
-  @Input() task: any = {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(111, changes);
+  @Input() task: ITask = {
+    id: 0,
+    title: '',
+    completed: false
   }
+  @Output() submitTaskEvent = new EventEmitter<string>();
 
   onSubmit() {
-    console.log(123, this.task);
+    this.submitTaskEvent.emit('');
   }
 }

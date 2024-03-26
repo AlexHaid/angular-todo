@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, take, tap } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import ITask from './interfaces';
 
 @Injectable({
@@ -38,7 +38,6 @@ export class TodoService {
     this.http.get<ITask[]>(`https://jsonplaceholder.typicode.com/todos?userId=1`)
       .subscribe({
         next: res => {
-          console.log(res);
           this._tasks.next(res);
         } 
       });
@@ -63,7 +62,6 @@ export class TodoService {
   }
 
   public removeTask(id: number) {
-    console.log(id);
     this._removeTask(id)
   }
 }

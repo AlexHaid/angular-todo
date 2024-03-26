@@ -7,13 +7,15 @@ import { TaskListComponent } from './task-list/task-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EditTaskComponent } from './edit-task/edit-task.component';
+import { TaskItemComponent } from './task-item/task-item.component';
 
 @NgModule({
   declarations: [
     TodoComponent,
     NewTaskComponent,
     TaskListComponent,
-    EditTaskComponent
+    EditTaskComponent,
+    TaskItemComponent
   ],
   imports: [
     CommonModule,

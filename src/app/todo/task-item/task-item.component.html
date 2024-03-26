@@ -1,0 +1,1 @@
+<input [ngModel]="title" (ngModelChange)="onChange($event)" [ngClass]="completed === true ? 'done' : ''" id="task-{{ id }}" type="text">
